@@ -18,7 +18,7 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
-          POSTGRES_DB: upcoming_mobiles
+          POSTGRES_DB: upcoming_mobiles_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -43,7 +43,7 @@ jobs:
 
 
     - name: Run migrations
-      run: make migrateup
+      run: make migratetestup
       
     - name: Test
       run: make test
