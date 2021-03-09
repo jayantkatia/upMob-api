@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jayantkatia/backend_upcoming_mobiles/util"
+	"github.com/jayantkatia/upcoming_mobiles_api/util"
 	_ "github.com/lib/pq"
 )
 

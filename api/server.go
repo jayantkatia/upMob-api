@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	db "github.com/jayantkatia/backend_upcoming_mobiles/db/sqlc"
+	db "github.com/jayantkatia/upcoming_mobiles_api/db/sqlc"
 )
 
 type Server struct {

@@ -9,7 +9,7 @@ import (
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
-	db "github.com/jayantkatia/backend_upcoming_mobiles/db/sqlc"
+	db "github.com/jayantkatia/upcoming_mobiles_api/db/sqlc"
 )
 
 const host = "https://www.91mobiles.com"

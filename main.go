@@ -7,10 +7,11 @@ import (
 	"time"
 
 	"github.com/go-co-op/gocron"
-	"github.com/jayantkatia/backend_upcoming_mobiles/api"
-	db "github.com/jayantkatia/backend_upcoming_mobiles/db/sqlc"
-	"github.com/jayantkatia/backend_upcoming_mobiles/scraper"
-	"github.com/jayantkatia/backend_upcoming_mobiles/util"
+	"github.com/jayantkatia/upcoming_mobiles_api/api"
+	db "github.com/jayantkatia/upcoming_mobiles_api/db/sqlc"
+	"github.com/jayantkatia/upcoming_mobiles_api/scraper"
+	"github.com/jayantkatia/upcoming_mobiles_api/util"
+
 	_ "github.com/lib/pq"
 )
 

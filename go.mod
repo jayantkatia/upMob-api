@@ -1,4 +1,4 @@
-module github.com/jayantkatia/backend_upcoming_mobiles
+module github.com/jayantkatia/upcoming_mobiles_api
 
 go 1.15
 
