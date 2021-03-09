@@ -54,20 +54,20 @@ func StartScraping(store *db.Store) {
 
 func Scrap(path string) (db.Devices, error) {
 
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.DisableGPU,
-		chromedp.Flag("headless", false),
-	)
+	// opts := append(chromedp.DefaultExecAllocatorOptions[:],
+	// 	chromedp.DisableGPU,
+	// 	chromedp.Flag("headless", false),
+	// )
 
-	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
-	defer cancel()
+	// ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	// defer cancel()
 
-	ctx, cancel = chromedp.NewContext(ctx)
-	defer cancel()
+	// ctx, cancel = chromedp.NewContext(ctx)
+	// defer cancel()
 
 	// Headless mode
-	// ctx, cancel := chromedp.NewContext(context.Background())
-	// defer cancel()
+	ctx, cancel := chromedp.NewContext(context.Background())
+	defer cancel()
 
 	var containerDivs, name, date, price, image, specScore []*cdp.Node
 	var arrDevices db.Devices
