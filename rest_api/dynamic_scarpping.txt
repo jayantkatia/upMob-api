@@ -1,0 +1,116 @@
+// package dynamicScrapping
+
+// import (
+// 	"context"
+// 	"fmt"
+// 	"log"
+
+// 	"github.com/chromedp/cdproto/cdp"
+// 	"github.com/chromedp/chromedp"
+// )
+
+// type Device struct {
+// 	name           string
+// 	expectedLaunch string
+// 	imgURL         string
+// 	sourceURL      string
+// 	price          float64
+// }
+
+// var arrDevices []Device
+// var host = "https://www.91mobiles.com"
+
+// // var containerDivs []*cdp.Node
+
+// // var name []*cdp.Node
+// // var price []*cdp.Node
+// // var date []*cdp.Node
+// // var image []*cdp.Node
+
+// func main() {
+
+// 	//Non Headless mode
+// 	// create chrome instance
+// 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+// 		chromedp.DisableGPU,
+// 		// Set the headless flag to false to display the browser window
+// 		chromedp.Flag("headless", false),
+// 	)
+
+// 	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+// 	defer cancel()
+
+// 	ctx, cancel = chromedp.NewContext(ctx)
+// 	defer cancel()
+
+// 	// create context
+// 	// ctx, cancel := chromedp.NewContext(context.Background())
+// 	// defer cancel()
+// 	var containerDivs, name, price, date, image []*cdp.Node
+
+// 	pages := 1
+
+// 	for pages < 5 {
+
+// 		err := chromedp.Run(ctx, chromedp.Tasks{
+// 			chromedp.Navigate(host + "/upcoming-mobiles-in-india"),
+// 			chromedp.ScrollIntoView(`#footer_gad`, chromedp.ByID),
+// 			chromedp.WaitVisible(fmt.Sprintf("div[data-row=\"%d\"]", pages*20), chromedp.ByQuery),
+
+// 			chromedp.Nodes(".finder_snipet_wrap ", &containerDivs, chromedp.ByQueryAll), //a[data-type=\"name\"]
+// 			chromedp.ActionFunc(func(context.Context) error {
+// 				log.Printf(">>>> SCRAPING ENDS")
+// 				return nil
+// 			}),
+// 		})
+
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+
+// 		err = chromedp.Run(ctx, chromedp.Tasks{
+// 			chromedp.Nodes("a[data-type=\"name\"]", &name, chromedp.ByQuery, chromedp.FromNode(containerDivs[20])),
+// 			chromedp.ActionFunc(func(context.Context) error {
+// 				log.Printf(">>>> SCRAPING ENDS")
+// 				return nil
+// 			}),
+
+// 			chromedp.Nodes("div.pro_list_date", &date, chromedp.ByQuery, chromedp.FromNode(containerDivs[0])),
+// 			chromedp.ActionFunc(func(context.Context) error {
+// 				log.Printf(">>>> SCRAPING ENDS")
+// 				return nil
+// 			}),
+// 			chromedp.Nodes("span.price_float", &price, chromedp.ByQueryAll, chromedp.FromNode(containerDivs[0])),
+
+// 			chromedp.ActionFunc(func(context.Context) error {
+// 				log.Printf(">>>> SCRAPING ENDS")
+// 				return nil
+// 			}),
+
+// 			chromedp.Nodes("img[data-type=\"image\"]", &image, chromedp.ByQuery, chromedp.FromNode(containerDivs[0])),
+// 			chromedp.ActionFunc(func(context.Context) error {
+// 				log.Printf(">>>> SCRAPING ENDS")
+// 				return nil
+// 			}),
+// 		})
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		fmt.Println(name[0].Children[0].NodeValue)
+
+// 		fmt.Println(date[0].Children[0].NodeValue)
+// 		fmt.Println(image[0].Attribute("src"))
+
+// 		fmt.Println(price[0].Children)
+// 		var text string
+
+// 		if err := chromedp.Run(ctx,
+// 			chromedp.Text([]cdp.NodeID{price[0].NodeID}, &text, chromedp.ByNodeID),
+// 		); err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		fmt.Println(text)
+// 	}
+
+// 	// fmt.Printf("got second column value = %s, from row %d\n", secondCol, i)
+// }

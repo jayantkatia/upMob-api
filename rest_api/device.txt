@@ -1,0 +1,9 @@
+// package device
+
+// type Device struct {
+// 	name           string
+// 	expectedLaunch string
+// 	imgURL         string
+// 	sourceURL      string
+// 	price          float64
+// }

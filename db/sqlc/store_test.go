@@ -1,0 +1,24 @@
+package db
+
+import (
+	"context"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
+
+func TestTx(t *testing.T) {
+	store := NewStore(testDB)
+
+	var devices Devices
+
+	i := 0
+	for i < 50 {
+		devices = append(devices, createRandomDevice(t))
+		i++
+	}
+
+	err := store.UpdateDBTx(context.Background(), devices)
+	require.NoError(t, err)
+
+}
