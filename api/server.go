@@ -6,12 +6,12 @@ import (
 )
 
 type Server struct {
-	queries *db.Queries
-	router  *gin.Engine
+	store  *db.Store
+	router *gin.Engine
 }
 
-func NewServer(queries *db.Queries) *Server {
-	server := &Server{queries: queries}
+func NewServer(store *db.Store) *Server {
+	server := &Server{store: store}
 	router := gin.Default()
 
 	router.GET("/devices", server.getDevices)

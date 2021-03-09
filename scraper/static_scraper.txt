@@ -1,0 +1,92 @@
+//This is for future references only
+/* Initially, static scraping was implemented as lazy loading of the host site
+   didn't come under notice*/
+
+/*
+   package staticScraper
+
+   import (
+   	"fmt"
+   	"log"
+   	"net/http"
+   	"strconv"
+   	"strings"
+   	"time"
+
+   	"github.com/PuerkitoBio/goquery"
+   )
+
+   type Device struct {
+   	name           string
+   	expectedLaunch string
+   	imgURL         string
+   	sourceURL      string
+   	price          float64
+   }
+
+   var arrDevices []Device
+   var host = "https://www.91mobiles.com"
+
+   func processElement(index int, element *goquery.Selection) {
+
+   	var device Device
+
+   	name := element.Find("a[data-type=\"name\"]")
+   	href, exists := name.Attr("href")
+   	if exists {
+   		device.name = name.Text()
+   		device.sourceURL = host + href
+   	}
+
+   	image := element.Find("a[data-type=\"image\"]")
+   	imageURL, exists := image.Attr("href")
+   	if exists {
+   		device.imgURL = imageURL
+   	}
+
+   	expectedLaunch := element.Find("div.pro_list_date")
+   	if expectedLaunch != nil {
+   		device.expectedLaunch = expectedLaunch.Text()
+   	}
+
+   	price := element.Find(".price_float")
+   	if price != nil {
+   		commaSeparated := strings.Split(price.Text(), ".")[1]
+   		arrayStrings := strings.Split(commaSeparated, ",")
+   		priceString := strings.Join(arrayStrings, "")
+   		if priceFloat, err := strconv.ParseFloat(priceString, 32); err == nil {
+   			device.price = priceFloat
+   		}
+   	}
+
+   	arrDevices = append(arrDevices, device)
+   	fmt.Println(device)
+   }
+   func staticScraper() {
+   	//creating an http client with timeout
+   	client := &http.Client{
+   		Timeout: 30 * time.Second,
+   	}
+
+   	request, err := http.NewRequest("GET", "https://www.91mobiles.com/upcoming-mobiles-in-india", nil)
+   	if err != nil {
+   		log.Fatal(err)
+   	}
+   	request.Header.Set("User-Agent", "Mozilla/5.0 JayantsFirstBot/scraps webpage to fetch upcoming mobile launches")
+
+   	response, err := client.Do(request)
+   	if err != nil {
+   		log.Fatal(err)
+   	}
+   	defer response.Body.Close()
+
+   	document, err := goquery.NewDocumentFromReader(response.Body)
+   	if err != nil {
+   		log.Fatal(err)
+   	}
+
+   	document.Find("div.finder_snipet_wrap").Each(processElement)
+
+   }
+
+*/

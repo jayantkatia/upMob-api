@@ -7,7 +7,7 @@ import (
 )
 
 func (server *Server) getDevices(ctx *gin.Context) {
-	devices, err := server.queries.GetDevices(ctx)
+	devices, err := server.store.GetDevices(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
