@@ -4,22 +4,22 @@
 ## API
   <i>Fetch all upcoming devices</i> 
 
-* <b>URL<b>
+* <b>URL</b>
 
   <i>/devices</i>
 
-* <b>Method<b>
+* <b>Method</b>
   
   `GET`
   
-* <b>URL Params<b>
+* <b>URL Params</b>
 
     <i>None</i>
 
-* <b>Success Response:<b>
+* <b>Success Response:</b>
 
-  * <b>Code:<b> 200 <br />
-    <b>Content:<b> `[
+  * <b>Code:</b> 200 <br />
+    <b>Content:</b> `[
   {
     "device_name": "Xiaomi Redmi Note 9 Pro 5G",
     "expected": "Expected Launch:May 2021",
