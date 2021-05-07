@@ -30,8 +30,11 @@ func RandomDeviceName() string {
 	return RandomString(6)
 }
 
-func RandomPrice() int64 {
-	return RandomInteger(1000, 100000)
+func RandomPrice() int32 {
+	return int32(RandomInteger(1000, 1000000))
+}
+func RandomDate() string {
+	return fmt.Sprint(RandomInteger(1, 31))
 }
 func RandomYear() string {
 	return fmt.Sprint(RandomInteger(21, 23))

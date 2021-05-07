@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/jayantkatia/upcoming_mobiles_api/util"
 	"github.com/stretchr/testify/require"
@@ -35,7 +36,7 @@ func TestInsertDevice(t *testing.T) {
 }
 
 func TestDeleteDevices(t *testing.T) {
-	err := testQueries.DeleteDevices(context.Background())
+	err := testQueries.DeleteDevicesXDaysOld(context.Background(), time.Now())
 	require.NoError(t, err)
 }
 
@@ -43,7 +44,7 @@ func TestGetDevices(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		createRandomDevice(t)
 	}
-	devices, err := testQueries.GetDevices(context.Background())
+	devices, err := testQueries.GetAllDevices(context.Background())
 	require.NoError(t, err)
 
 	for _, device := range devices {
