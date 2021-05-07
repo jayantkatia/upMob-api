@@ -3,8 +3,7 @@ module github.com/jayantkatia/upcoming_mobiles_api
 go 1.15
 
 require (
-	github.com/chromedp/cdproto v0.0.0-20210305224431-50b9f457e822
-	github.com/chromedp/chromedp v0.6.8
+	github.com/PuerkitoBio/goquery v1.6.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-co-op/gocron v0.7.1
 	github.com/go-playground/validator/v10 v10.4.1 // indirect

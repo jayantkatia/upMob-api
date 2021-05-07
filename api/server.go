@@ -6,16 +6,16 @@ import (
 )
 
 type Server struct {
-	store  *db.Store
-	router *gin.Engine
+	queries *db.Queries
+	router  *gin.Engine
 }
 
-func NewServer(store *db.Store) *Server {
-	server := &Server{store: store}
+func NewServer(queries *db.Queries) *Server {
+	server := &Server{queries: queries}
 	router := gin.Default()
 
 	router.GET("/devices", server.getDevices)
-
+	router.GET("/devices/top100", server.getTop100Devices)
 	server.router = router
 
 	return server

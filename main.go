@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"time"
 
@@ -15,9 +14,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func prOk() {
-	fmt.Print("OK")
-}
 func main() {
 	config, err := util.LoadConfig(".")
 	if err != nil {
@@ -29,11 +25,11 @@ func main() {
 		log.Fatal("Cannot connect to db ", err)
 	}
 
-	store := db.NewStore(conn)
-	server := api.NewServer(store)
+	queries := db.New(conn)
+	server := api.NewServer(queries)
 
 	task := func() {
-		scraper.StartScraping(store)
+		scraper.Scraper(queries)
 	}
 	go func() {
 		s := gocron.NewScheduler(time.UTC)

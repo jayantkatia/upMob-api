@@ -5,23 +5,34 @@ package db
 
 import (
 	"context"
+	"database/sql"
+	"time"
 )
 
-const deleteDevices = `-- name: DeleteDevices :exec
-DELETE FROM devices
+const deleteDevice = `-- name: DeleteDevice :exec
+DELETE FROM devices WHERE device_name = $1
 `
 
-func (q *Queries) DeleteDevices(ctx context.Context) error {
-	_, err := q.db.ExecContext(ctx, deleteDevices)
+func (q *Queries) DeleteDevice(ctx context.Context, deviceName string) error {
+	_, err := q.db.ExecContext(ctx, deleteDevice, deviceName)
 	return err
 }
 
-const getDevices = `-- name: GetDevices :many
-SELECT device_name, expected, price, img_url, source_url, spec_score FROM devices
+const deleteDevicesXDaysOld = `-- name: DeleteDevicesXDaysOld :exec
+DELETE FROM devices WHERE scrape_timestamp > $1
 `
 
-func (q *Queries) GetDevices(ctx context.Context) ([]Device, error) {
-	rows, err := q.db.QueryContext(ctx, getDevices)
+func (q *Queries) DeleteDevicesXDaysOld(ctx context.Context, scrapeTimestamp time.Time) error {
+	_, err := q.db.ExecContext(ctx, deleteDevicesXDaysOld, scrapeTimestamp)
+	return err
+}
+
+const getAllDevices = `-- name: GetAllDevices :many
+SELECT device_name, last_updated, expected, price, img_url, source_url, spec_score, ram, processor, front_camera, rear_camera, battery, display, operating_system, custom_ui, chipset, cpu, architecture, graphics, display_type, screen_size, resolution, pixel_density, touchscreen, internal_memory, expandable_memory, m_camera_setup, m_resolution, m_autofocus, m_ois, m_sensors, m_flash, m_image_resolution, m_settings, m_shooting_modes, m_camera_features, m_video_recording, s_camera_setup, s_resolution, s_video_recording, capacity, removable_battery, wireless_charging, quick_charging, usb, sim_slots, network_support, fingerprint_sensor, other_sensors, scrape_timestamp FROM devices
+`
+
+func (q *Queries) GetAllDevices(ctx context.Context) ([]Device, error) {
+	rows, err := q.db.QueryContext(ctx, getAllDevices)
 	if err != nil {
 		return nil, err
 	}
@@ -31,11 +42,144 @@ func (q *Queries) GetDevices(ctx context.Context) ([]Device, error) {
 		var i Device
 		if err := rows.Scan(
 			&i.DeviceName,
+			&i.LastUpdated,
 			&i.Expected,
 			&i.Price,
 			&i.ImgUrl,
 			&i.SourceUrl,
 			&i.SpecScore,
+			&i.Ram,
+			&i.Processor,
+			&i.FrontCamera,
+			&i.RearCamera,
+			&i.Battery,
+			&i.Display,
+			&i.OperatingSystem,
+			&i.CustomUi,
+			&i.Chipset,
+			&i.Cpu,
+			&i.Architecture,
+			&i.Graphics,
+			&i.DisplayType,
+			&i.ScreenSize,
+			&i.Resolution,
+			&i.PixelDensity,
+			&i.Touchscreen,
+			&i.InternalMemory,
+			&i.ExpandableMemory,
+			&i.MCameraSetup,
+			&i.MResolution,
+			&i.MAutofocus,
+			&i.MOis,
+			&i.MSensors,
+			&i.MFlash,
+			&i.MImageResolution,
+			&i.MSettings,
+			&i.MShootingModes,
+			&i.MCameraFeatures,
+			&i.MVideoRecording,
+			&i.SCameraSetup,
+			&i.SResolution,
+			&i.SVideoRecording,
+			&i.Capacity,
+			&i.RemovableBattery,
+			&i.WirelessCharging,
+			&i.QuickCharging,
+			&i.Usb,
+			&i.SimSlots,
+			&i.NetworkSupport,
+			&i.FingerprintSensor,
+			&i.OtherSensors,
+			&i.ScrapeTimestamp,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getLastUpdatedDevice = `-- name: GetLastUpdatedDevice :one
+SELECT last_updated FROM devices WHERE device_name = $1
+`
+
+func (q *Queries) GetLastUpdatedDevice(ctx context.Context, deviceName string) (string, error) {
+	row := q.db.QueryRowContext(ctx, getLastUpdatedDevice, deviceName)
+	var last_updated string
+	err := row.Scan(&last_updated)
+	return last_updated, err
+}
+
+const getLastXDevices = `-- name: GetLastXDevices :many
+SELECT device_name, last_updated, expected, price, img_url, source_url, spec_score, ram, processor, front_camera, rear_camera, battery, display, operating_system, custom_ui, chipset, cpu, architecture, graphics, display_type, screen_size, resolution, pixel_density, touchscreen, internal_memory, expandable_memory, m_camera_setup, m_resolution, m_autofocus, m_ois, m_sensors, m_flash, m_image_resolution, m_settings, m_shooting_modes, m_camera_features, m_video_recording, s_camera_setup, s_resolution, s_video_recording, capacity, removable_battery, wireless_charging, quick_charging, usb, sim_slots, network_support, fingerprint_sensor, other_sensors, scrape_timestamp FROM devices ORDER BY scrape_timestamp DESC LIMIT $1
+`
+
+func (q *Queries) GetLastXDevices(ctx context.Context, limit int32) ([]Device, error) {
+	rows, err := q.db.QueryContext(ctx, getLastXDevices, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Device
+	for rows.Next() {
+		var i Device
+		if err := rows.Scan(
+			&i.DeviceName,
+			&i.LastUpdated,
+			&i.Expected,
+			&i.Price,
+			&i.ImgUrl,
+			&i.SourceUrl,
+			&i.SpecScore,
+			&i.Ram,
+			&i.Processor,
+			&i.FrontCamera,
+			&i.RearCamera,
+			&i.Battery,
+			&i.Display,
+			&i.OperatingSystem,
+			&i.CustomUi,
+			&i.Chipset,
+			&i.Cpu,
+			&i.Architecture,
+			&i.Graphics,
+			&i.DisplayType,
+			&i.ScreenSize,
+			&i.Resolution,
+			&i.PixelDensity,
+			&i.Touchscreen,
+			&i.InternalMemory,
+			&i.ExpandableMemory,
+			&i.MCameraSetup,
+			&i.MResolution,
+			&i.MAutofocus,
+			&i.MOis,
+			&i.MSensors,
+			&i.MFlash,
+			&i.MImageResolution,
+			&i.MSettings,
+			&i.MShootingModes,
+			&i.MCameraFeatures,
+			&i.MVideoRecording,
+			&i.SCameraSetup,
+			&i.SResolution,
+			&i.SVideoRecording,
+			&i.Capacity,
+			&i.RemovableBattery,
+			&i.WirelessCharging,
+			&i.QuickCharging,
+			&i.Usb,
+			&i.SimSlots,
+			&i.NetworkSupport,
+			&i.FingerprintSensor,
+			&i.OtherSensors,
+			&i.ScrapeTimestamp,
 		); err != nil {
 			return nil, err
 		}
@@ -52,43 +196,228 @@ func (q *Queries) GetDevices(ctx context.Context) ([]Device, error) {
 
 const insertDevice = `-- name: InsertDevice :one
 INSERT INTO devices (
-    device_name,
-    expected,
-    price,
-    img_url,
-    source_url,
-    spec_score
+  device_name,
+  last_updated,
+  expected,
+  price,
+  img_url,
+  source_url,
+  spec_score,
+  ram,
+  processor,
+  front_camera,
+  rear_camera,
+  battery,
+  display,
+  operating_system,
+  custom_ui, 
+  chipset,
+  cpu,
+  architecture,
+  graphics,
+  display_type,
+  screen_size,
+  resolution,
+  pixel_density,
+  touchscreen,
+  internal_memory,
+  expandable_memory,
+  m_camera_setup,
+  m_resolution,
+  m_autofocus,
+  m_ois,
+  m_sensors,
+  m_flash,
+  m_image_resolution,
+  m_settings,
+  m_shooting_modes,
+  m_camera_features,
+  m_video_recording,
+  s_camera_setup,
+  s_resolution,
+  s_video_recording,
+  capacity,
+  removable_battery,
+  wireless_charging,
+  quick_charging,
+  usb,
+  sim_slots,
+  network_support,
+  fingerprint_sensor,
+  other_sensors,
+  scrape_timestamp
 ) VALUES (
-    $1, $2, $3, $4, $5, $6
-)RETURNING device_name, expected, price, img_url, source_url, spec_score
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50
+) RETURNING device_name, last_updated, expected, price, img_url, source_url, spec_score, ram, processor, front_camera, rear_camera, battery, display, operating_system, custom_ui, chipset, cpu, architecture, graphics, display_type, screen_size, resolution, pixel_density, touchscreen, internal_memory, expandable_memory, m_camera_setup, m_resolution, m_autofocus, m_ois, m_sensors, m_flash, m_image_resolution, m_settings, m_shooting_modes, m_camera_features, m_video_recording, s_camera_setup, s_resolution, s_video_recording, capacity, removable_battery, wireless_charging, quick_charging, usb, sim_slots, network_support, fingerprint_sensor, other_sensors, scrape_timestamp
 `
 
 type InsertDeviceParams struct {
-	DeviceName string `json:"device_name"`
-	Expected   string `json:"expected"`
-	Price      int64  `json:"price"`
-	ImgUrl     string `json:"img_url"`
-	SourceUrl  string `json:"source_url"`
-	SpecScore  int32  `json:"spec_score"`
+	DeviceName        string         `json:"device_name"`
+	LastUpdated       string         `json:"last_updated"`
+	Expected          string         `json:"expected"`
+	Price             int32          `json:"price"`
+	ImgUrl            string         `json:"img_url"`
+	SourceUrl         string         `json:"source_url"`
+	SpecScore         int32          `json:"spec_score"`
+	Ram               sql.NullString `json:"ram"`
+	Processor         sql.NullString `json:"processor"`
+	FrontCamera       sql.NullString `json:"front_camera"`
+	RearCamera        sql.NullString `json:"rear_camera"`
+	Battery           sql.NullString `json:"battery"`
+	Display           sql.NullString `json:"display"`
+	OperatingSystem   sql.NullString `json:"operating_system"`
+	CustomUi          sql.NullString `json:"custom_ui"`
+	Chipset           sql.NullString `json:"chipset"`
+	Cpu               sql.NullString `json:"cpu"`
+	Architecture      sql.NullString `json:"architecture"`
+	Graphics          sql.NullString `json:"graphics"`
+	DisplayType       sql.NullString `json:"display_type"`
+	ScreenSize        sql.NullString `json:"screen_size"`
+	Resolution        sql.NullString `json:"resolution"`
+	PixelDensity      sql.NullString `json:"pixel_density"`
+	Touchscreen       sql.NullString `json:"touchscreen"`
+	InternalMemory    sql.NullString `json:"internal_memory"`
+	ExpandableMemory  sql.NullString `json:"expandable_memory"`
+	MCameraSetup      sql.NullString `json:"m_camera_setup"`
+	MResolution       sql.NullString `json:"m_resolution"`
+	MAutofocus        sql.NullString `json:"m_autofocus"`
+	MOis              sql.NullString `json:"m_ois"`
+	MSensors          sql.NullString `json:"m_sensors"`
+	MFlash            sql.NullString `json:"m_flash"`
+	MImageResolution  sql.NullString `json:"m_image_resolution"`
+	MSettings         sql.NullString `json:"m_settings"`
+	MShootingModes    sql.NullString `json:"m_shooting_modes"`
+	MCameraFeatures   sql.NullString `json:"m_camera_features"`
+	MVideoRecording   sql.NullString `json:"m_video_recording"`
+	SCameraSetup      sql.NullString `json:"s_camera_setup"`
+	SResolution       sql.NullString `json:"s_resolution"`
+	SVideoRecording   sql.NullString `json:"s_video_recording"`
+	Capacity          sql.NullString `json:"capacity"`
+	RemovableBattery  sql.NullString `json:"removable_battery"`
+	WirelessCharging  sql.NullString `json:"wireless_charging"`
+	QuickCharging     sql.NullString `json:"quick_charging"`
+	Usb               sql.NullString `json:"usb"`
+	SimSlots          sql.NullString `json:"sim_slots"`
+	NetworkSupport    sql.NullString `json:"network_support"`
+	FingerprintSensor sql.NullString `json:"fingerprint_sensor"`
+	OtherSensors      sql.NullString `json:"other_sensors"`
+	ScrapeTimestamp   time.Time      `json:"scrape_timestamp"`
 }
 
 func (q *Queries) InsertDevice(ctx context.Context, arg InsertDeviceParams) (Device, error) {
 	row := q.db.QueryRowContext(ctx, insertDevice,
 		arg.DeviceName,
+		arg.LastUpdated,
 		arg.Expected,
 		arg.Price,
 		arg.ImgUrl,
 		arg.SourceUrl,
 		arg.SpecScore,
+		arg.Ram,
+		arg.Processor,
+		arg.FrontCamera,
+		arg.RearCamera,
+		arg.Battery,
+		arg.Display,
+		arg.OperatingSystem,
+		arg.CustomUi,
+		arg.Chipset,
+		arg.Cpu,
+		arg.Architecture,
+		arg.Graphics,
+		arg.DisplayType,
+		arg.ScreenSize,
+		arg.Resolution,
+		arg.PixelDensity,
+		arg.Touchscreen,
+		arg.InternalMemory,
+		arg.ExpandableMemory,
+		arg.MCameraSetup,
+		arg.MResolution,
+		arg.MAutofocus,
+		arg.MOis,
+		arg.MSensors,
+		arg.MFlash,
+		arg.MImageResolution,
+		arg.MSettings,
+		arg.MShootingModes,
+		arg.MCameraFeatures,
+		arg.MVideoRecording,
+		arg.SCameraSetup,
+		arg.SResolution,
+		arg.SVideoRecording,
+		arg.Capacity,
+		arg.RemovableBattery,
+		arg.WirelessCharging,
+		arg.QuickCharging,
+		arg.Usb,
+		arg.SimSlots,
+		arg.NetworkSupport,
+		arg.FingerprintSensor,
+		arg.OtherSensors,
+		arg.ScrapeTimestamp,
 	)
 	var i Device
 	err := row.Scan(
 		&i.DeviceName,
+		&i.LastUpdated,
 		&i.Expected,
 		&i.Price,
 		&i.ImgUrl,
 		&i.SourceUrl,
 		&i.SpecScore,
+		&i.Ram,
+		&i.Processor,
+		&i.FrontCamera,
+		&i.RearCamera,
+		&i.Battery,
+		&i.Display,
+		&i.OperatingSystem,
+		&i.CustomUi,
+		&i.Chipset,
+		&i.Cpu,
+		&i.Architecture,
+		&i.Graphics,
+		&i.DisplayType,
+		&i.ScreenSize,
+		&i.Resolution,
+		&i.PixelDensity,
+		&i.Touchscreen,
+		&i.InternalMemory,
+		&i.ExpandableMemory,
+		&i.MCameraSetup,
+		&i.MResolution,
+		&i.MAutofocus,
+		&i.MOis,
+		&i.MSensors,
+		&i.MFlash,
+		&i.MImageResolution,
+		&i.MSettings,
+		&i.MShootingModes,
+		&i.MCameraFeatures,
+		&i.MVideoRecording,
+		&i.SCameraSetup,
+		&i.SResolution,
+		&i.SVideoRecording,
+		&i.Capacity,
+		&i.RemovableBattery,
+		&i.WirelessCharging,
+		&i.QuickCharging,
+		&i.Usb,
+		&i.SimSlots,
+		&i.NetworkSupport,
+		&i.FingerprintSensor,
+		&i.OtherSensors,
+		&i.ScrapeTimestamp,
 	)
 	return i, err
+}
+
+const updateScrapeTimestamp = `-- name: UpdateScrapeTimestamp :exec
+UPDATE devices SET scrape_timestamp=$1 WHERE device_name = $1
+`
+
+func (q *Queries) UpdateScrapeTimestamp(ctx context.Context, scrapeTimestamp time.Time) error {
+	_, err := q.db.ExecContext(ctx, updateScrapeTimestamp, scrapeTimestamp)
+	return err
 }
