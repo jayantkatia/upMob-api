@@ -105,7 +105,7 @@ func visitPage(link string, client *http.Client, queries *db.Queries) {
 	}
 
 	last_updated := document.Find(".label_hd").First()
-	name := document.Find("span[itemprop=\"name\"]")
+	name := document.Find("h1.h1_pro_head")
 
 	lu, err := queries.GetLastUpdatedDevice(context.Background(), name.Text())
 	isRecordExists := false
@@ -118,7 +118,7 @@ func visitPage(link string, client *http.Client, queries *db.Queries) {
 		isRecordExists = true
 	}
 
-	price := document.Find("span[itemprop=\"price\"]").Text()
+	price := document.Find("span.big_prc[itemprop=\"price\"]").Text()
 	arrayStrings := strings.Split(price, ",")
 	priceString := strings.Join(arrayStrings, "")
 	priceInt, err := strconv.ParseInt(strings.TrimSpace(priceString), 10, 32)
