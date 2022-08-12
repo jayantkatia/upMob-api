@@ -18,11 +18,9 @@
 
 * <b>Success Response:</b>
 
-  * <b>Code:</b> 200 <br />
-    <b>Content:</b> 
+  * <b>Code:</b> 200 <br /> 
     <details>
     <summary>See Response</summary>
-    <br/>
     
     ``` 
     [
@@ -205,7 +203,6 @@
             "scrape_timestamp": "2021-07-25T21:33:31.655995Z"
         }, ... ]
       ```
-    
     </details>
 
 ## Get Started with the Installation 
