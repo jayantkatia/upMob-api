@@ -21,9 +21,8 @@
   * <b>Code:</b> 200 <br />
     <b>Content:</b> 
     <details>
-<summary>See Response</summary>
-<br>
-
+    <summary>See Response</summary>
+    <br>
 ``` 
 [
   {
@@ -206,7 +205,6 @@
     }, ... ]
 
 ```
-
 </details>
 
 ## Get Started with the Installation 
