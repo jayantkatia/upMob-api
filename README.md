@@ -22,8 +22,8 @@
     <b>Content:</b> 
     <details>
     <summary>See Response</summary>
-    <br>
-    ``` 
+    <br/>
+    <code> 
     [
       {
             "device_name": "OnePlus 8T Pro",
@@ -203,8 +203,7 @@
             },
             "scrape_timestamp": "2021-07-25T21:33:31.655995Z"
         }, ... ]
-
-    ```
+      </code>
     </details>
 
 ## Get Started with the Installation 
