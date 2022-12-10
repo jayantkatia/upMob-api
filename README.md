@@ -1,12 +1,20 @@
-# upcoming_mobiles_api (UpMob API)
+# 📱🔍 upcoming_mobiles_api (UpMob API)
 <p align="center">UpMob API scraps <a href="https://www.91mobiles.com/upcoming-mobiles-in-india">91mobiles.com</a> to get devices information which are yet to be released in the Indian market and stores it in a postgres db<p>
 
-## API
+## ✨ Features
+1. Web Scraper 
+2. Cron Scheduler scrapes data every 24 hours
+3. Static scraping by calling internal AJAX calls
+4. Database Migrations
+5. Usage of Docker(Containerization) and Maketool(automation)
+6. Code for testing with good test coverage
+
+## 📚 API
   <i>Fetch all upcoming devices</i> 
 
 * <b>URL</b>
 
-  <i>/devices/top100</i>
+  <a href="https://upmob.koreacentral.cloudapp.azure.com/devices/top100"><i>/devices/top100</i></a>
 
 * <b>Method</b>
   
@@ -205,7 +213,7 @@
       ```
     </details>
 
-## Get Started with the Installation 
+## 🚀 Get Started with the Installation 
 1. Required Installations
     1. <a href="https://golang.org/doc/install">Install GoLang in your system</a>
     2. <a href="https://docs.docker.com/engine/install/">Install Docker in your system</a>
@@ -224,10 +232,10 @@
     ```shell
         make server
     ```
-    This runs main.go and you are good to Go :wink:
+    This runs main.go and you are good to Go 😉
 
 
-## Development and Contributing
+## ✨ Development and Contributing
 Yes, please! Feel free to contribute, raise issues and recommend best practices.
 <a href="https://github.com/jayantkatia/upcoming_mobiles_api/blob/main/Makefile"> Makefile</a> is your friend.
 

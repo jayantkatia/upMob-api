@@ -14,6 +14,7 @@ func NewServer(queries *db.Queries) *Server {
 	server := &Server{queries: queries}
 	router := gin.Default()
 
+	router.GET("/", server.homePage)
 	router.GET("/devices", server.getDevices)
 	router.GET("/devices/top100", server.getTop100Devices)
 	server.router = router
