@@ -235,7 +235,7 @@
     This runs main.go and you are good to Go 😉
 
 
-## ✨ Development and Contributing
+## 💜 Development and Contributing
 Yes, please! Feel free to contribute, raise issues and recommend best practices.
 <a href="https://github.com/jayantkatia/upcoming_mobiles_api/blob/main/Makefile"> Makefile</a> is your friend.
 
