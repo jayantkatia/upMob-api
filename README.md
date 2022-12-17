@@ -1,6 +1,6 @@
 # Title: UpMob API with Web-Scraping
 
-## 1. Methodology
+## 1. Methodology (High Level)
 ![Methodology](https://user-images.githubusercontent.com/56118625/208246136-ab264839-1f52-45c6-8207-5eb9a6d33784.png)
 
 ## 2. Description
