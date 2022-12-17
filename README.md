@@ -4,7 +4,7 @@
 ![Methodology](https://user-images.githubusercontent.com/56118625/208246136-ab264839-1f52-45c6-8207-5eb9a6d33784.png)
 
 ## 2. Description
-UpMob API scraps 91mobiles.com to get devices information which are yet to be released in the Indian market and stores it in a Postgres Database. The data is served by one of the endpoint. Client applications like []() can use and represent the data.  
+UpMob API scraps 91mobiles.com to get devices information which are yet to be released in the Indian market and stores it in a Postgres Database. The data is served by one of the endpoint. Client applications like [UpMob App](https://github.com/jayantkatia/upMob) can use and represent the data.  
 
 ## 3. Input/Output
 Input: 
